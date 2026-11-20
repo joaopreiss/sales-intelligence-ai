@@ -1,8 +1,10 @@
 # Sales Intelligence AI
 
-Plataforma de inteligência comercial que utiliza automação e IA para analisar leads, identificar oportunidades de negócio e transformar dados comerciais em insights estratégicos.
+Plataforma de inteligência comercial que utiliza automação e inteligência artificial para analisar leads, identificar oportunidades de negócio e transformar dados comerciais em insights estratégicos.
 
-O projeto combina workflows de automação, análise com inteligência artificial, persistência de dados e um dashboard interativo para centralizar informações e apoiar decisões comerciais.
+O projeto combina workflows de automação, análise com IA, persistência de dados e um dashboard interativo para centralizar informações e apoiar decisões comerciais.
+
+**[Acessar demonstração](https://sales-intelligence-ai-seven.vercel.app/)** · **[Repositório GitHub](https://github.com/joaopreiss/sales-intelligence-ai)**
 
 ## Sobre o projeto
 
@@ -14,24 +16,24 @@ Além da análise individual, o sistema possui um workflow de análise estratég
 
 ## Funcionalidades
 
-- **Análise automatizada de leads:** interpretação das mensagens recebidas utilizando IA.
+- **Análise automatizada de leads:** interpretação de mensagens recebidas utilizando IA.
 - **Lead Scoring:** pontuação para avaliar o potencial comercial de cada lead.
-- **Classificação de leads:** categorização por temperatura comercial (muito quente, quente, entre outras).
+- **Classificação de leads:** categorização por temperatura comercial.
 - **Identificação de prioridades:** classificação da urgência e necessidade do lead.
-- **Insights comerciais:** geração de informações relevantes para apoiar decisões e abordagens de vendas.
+- **Insights comerciais:** geração de informações para apoiar decisões e abordagens de vendas.
 - **Próximas ações recomendadas:** sugestões de encaminhamento para cada lead.
 - **Dashboard interativo:** visualização centralizada de indicadores e dados comerciais.
 - **Relatórios estratégicos:** análise consolidada e automatizada do cenário comercial.
-- **Atualização de dados:** integração com Supabase Realtime para atualização das informações na interface.
+- **Atualização em tempo real:** integração com Supabase Realtime para atualização das informações na interface.
 
 ## Dashboard
 
-O sistema possui uma interface desenvolvida com foco na visualização de informações, acompanhamento de indicadores e análise comercial.
+A interface foi desenvolvida com foco na visualização de informações, acompanhamento de indicadores e análise comercial.
 
 Principais áreas:
 
 - **Dashboard:** visão geral do cenário comercial e indicadores.
-- **Leads:** gerenciamento e visualização dos leads recebidos.
+- **Leads:** visualização e acompanhamento dos leads recebidos.
 - **Inteligência:** insights e análises gerados pela IA.
 - **Desempenho:** acompanhamento de métricas e resultados.
 - **Oportunidades:** visualização de oportunidades comerciais identificadas.
@@ -40,21 +42,23 @@ Principais áreas:
 
 O projeto utiliza uma arquitetura integrada entre interface, automação, inteligência artificial e banco de dados.
 
-\`\`\`mermaid
+
+```mermaid
 flowchart TD
     A[Entrada de lead] --> B[n8n - Workflow 1]
-    B --> C[Gemini AI]
+    B --> C[Google Gemini]
     C --> D[Classificação e Lead Scoring]
     D --> E[Supabase]
-    E --> F[Dashboard React]
     B --> G[Insights do Lead]
     G --> E
+    E --> F[Dashboard React]
+
     H[Agendamento diário] --> I[n8n - Workflow 2]
-    I --> J[Análise Estratégica com IA]
-    J --> K[Relatório Estratégico]
+    I --> J[Consolidação e análise com IA]
+    J --> K[Relatório estratégico]
     K --> E
-    E --> L[Dashboard atualizado]
-\`\`\`
+```
+
 
 ### Fluxo de processamento
 
@@ -102,10 +106,10 @@ Responsável pelo processamento individual dos leads.
 
 Responsável pela análise consolidada do cenário comercial.
 
-- Execução programada diária.
+- Execução programada diariamente às 18h.
 - Consolidação dos dados de leads.
 - Análise de indicadores e padrões.
-- Identificação de oportunidades e tendências.
+- Identificação de oportunidades.
 - Geração de relatório estratégico.
 - Persistência do relatório no Supabase.
 
@@ -114,21 +118,26 @@ Responsável pela análise consolidada do cenário comercial.
 | Tecnologia | Aplicação |
 |---|---|
 | React | Construção da interface |
+| JavaScript | Lógica da aplicação |
 | Vite | Ambiente de desenvolvimento e build |
 | Tailwind CSS | Estilização |
-| JavaScript | Lógica da aplicação |
+| React Router | Navegação entre páginas |
+| Recharts | Visualização de dados e gráficos |
+| Lucide React | Biblioteca de ícones |
+| Supabase | Banco de dados e Realtime |
+| @supabase/supabase-js | Integração do frontend com Supabase |
 | n8n | Orquestração e automação dos workflows |
 | Google Gemini | Análise de leads e geração de insights |
-| Supabase | Banco de dados e Realtime |
 | Git / GitHub | Versionamento e gerenciamento do código |
+| Vercel | Hospedagem do frontend |
 
 ## Estrutura de dados
 
 O sistema utiliza tabelas no Supabase para organizar os dados:
 
-- \`leads\` — informações e classificações dos leads.
-- \`insights_leads\` — análises e insights individuais.
-- \`relatorios_estrategicos\` — relatórios de análise comercial consolidada.
+- `leads` — informações e classificações dos leads.
+- `insights_leads` — análises e insights individuais.
+- `relatorios_estrategicos` — relatórios de análise comercial consolidada.
 
 ## Executando localmente
 
@@ -140,60 +149,80 @@ O sistema utiliza tabelas no Supabase para organizar os dados:
 
 ### 1. Clone o repositório
 
-\`\`\`bash
+```bash
 git clone https://github.com/joaopreiss/sales-intelligence-ai.git
-\`\`\`
+```
 
 ### 2. Entre na pasta do projeto
 
-\`\`\`bash
+```bash
 cd sales-intelligence-ai
-\`\`\`
+```
 
 ### 3. Instale as dependências
 
-\`\`\`bash
+```bash
 npm install
-\`\`\`
+```
 
 ### 4. Configure as variáveis de ambiente
 
-Crie um arquivo \`.env\` na raiz do projeto:
+Crie um arquivo `.env` na raiz do projeto:
 
-\`\`\`env
+```env
 VITE_SUPABASE_URL=sua_url_supabase
 VITE_SUPABASE_PUBLISHABLE_KEY=sua_chave_publica_supabase
-\`\`\`
+```
+
+Nunca utilize chaves privilegiadas do Supabase no frontend.
 
 ### 5. Inicie o servidor de desenvolvimento
 
-\`\`\`bash
+```bash
 npm run dev
-\`\`\`
+```
 
 O Vite fornecerá um endereço local para acessar a aplicação no navegador.
+
+### Outros comandos
+
+```bash
+npm run build
+npm run preview
+npm run lint
+```
 
 ## Segurança
 
 - Variáveis de ambiente são utilizadas para configuração local.
-- Arquivos de ambiente estão excluídos do versionamento.
-- As chaves de acesso privilegiado do Supabase não devem ser utilizadas no frontend.
-- O controle de acesso aos dados deve ser configurado por meio das políticas de segurança do Supabase (RLS).
+- Arquivos `.env` estão excluídos do versionamento.
+- Chaves privilegiadas do Supabase não devem ser utilizadas no frontend.
+- O controle de acesso aos dados utiliza políticas de segurança do Supabase (RLS).
+- As políticas de acesso devem ser revisadas antes da utilização com dados comerciais reais.
+
+**Observação:** os dados utilizados na demonstração são fictícios.
 
 ## Status do projeto
 
-**Em desenvolvimento.**
+**Dashboard publicado e workflows implementados.**
 
-O dashboard, a integração com Supabase e os workflows de automação e análise estratégica já foram implementados.
+O projeto já possui:
 
-A integração com WhatsApp está em fase de configuração e testes. Atualmente, o processamento de leads pode ser acionado por webhook.
+- Dashboard hospedado na Vercel.
+- Integração com Supabase.
+- Atualização de dados em tempo real.
+- Workflow de processamento individual de leads.
+- Workflow de análise estratégica programada.
+- Geração e armazenamento de relatórios estratégicos.
+
+Atualmente, a entrada de leads é realizada por webhook. A integração com WhatsApp ainda não faz parte do fluxo operacional implementado.
 
 ## Próximos passos
 
-- Publicação do dashboard em ambiente web.
 - Integração com WhatsApp para recebimento automatizado de leads.
 - Aprimoramento das análises comerciais e dos relatórios estratégicos.
 - Evolução das funcionalidades de inteligência comercial.
+- Otimização do carregamento da aplicação.
 
 ## Objetivo
 
