@@ -1,161 +1,228 @@
-# Sales Intelligence AI — Documentação Oficial do Sistema
+# Sales Intelligence AI — Documentação Técnica
 
-> Inteligência Comercial e Scoring Preditivo de Leads com IA.
+## 1. Visão geral
 
----
+O **Sales Intelligence AI** é uma aplicação de inteligência comercial que utiliza automação e inteligência artificial para analisar mensagens de potenciais clientes, classificar leads, gerar insights e consolidar informações em relatórios estratégicos.
 
-## 1. Visão Geral do Produto
+O projeto simula uma solução B2B para apoiar equipes comerciais na organização, qualificação e priorização de oportunidades.
 
-O **Sales Intelligence AI** é um dashboard analítico voltado para operações comerciais de alto desempenho. O sistema atua como um **Command Center** que ingere leads capturados, processa suas necessidades e mensagens por meio de fluxos automatizados (n8n + Google Gemini Pro), calcula pontuações preditivas (*lead score*) e entrega recomendações acionáveis em tempo real para times de vendas e SDRs.
+A aplicação integra workflows automatizados, processamento com IA, banco de dados e um dashboard interativo.
 
-### Principais Capacidades
-- **Scoring Preditivo**: Qualificação automática de leads de 0 a 100 baseada no fit comercial e urgência.
-- **Roteamento Inteligente**: Sinalização imediata de leads que necessitam de intervenção humana vs. fluxo automatizado.
-- **Diagnóstico Comercial com IA**: Geração de diagnósticos semânticos, oportunidades mapeadas e ações recomendadas para cada contato.
-- **Monitoramento em Tempo Real**: Atualização instantânea da interface via Supabase Realtime conforme novos contatos chegam à base.
+### Links do projeto
 
----
+- **Aplicação:** https://sales-intelligence-ai-seven.vercel.app/
+- **Repositório:** https://github.com/joaopreiss/sales-intelligence-ai
 
-## 2. Stack Tecnológica
+## 2. Arquitetura da solução
 
-| Camada | Tecnologia | Propósito |
-| :--- | :--- | :--- |
-| **Framework Frontend** | React 19 + Vite 8 | Interface reativa, componentizada e build ultrarrápido |
-| **Roteamento** | React Router DOM v7 | Navegação client-side SPA sem recarregamento |
-| **Estilização & Design** | Tailwind CSS v4 + Design Tokens Customizados | Dark mode premium (estética Linear/Stripe/Vercel) |
-| **Data Viz / Gráficos** | Recharts v3 | Gráficos analíticos customizados com tooltips escuros |
-| **Ícones** | Lucide React | Biblioteca consistente de ícones vetoriais |
-| **Backend & Realtime** | Supabase (PostgreSQL + Realtime Channel) | Banco de dados, persistência e websocket de sincronização |
-| **Automação & IA** | n8n + Google Gemini AI (integração externa) | Orquestração do webhook e motor cognitivo de qualificação |
+O sistema é dividido em quatro componentes principais:
 
----
+- **Frontend:** interface desenvolvida com React, responsável pela visualização dos dados.
+- **Automação:** workflows no n8n para processamento individual e análise estratégica.
+- **Inteligência artificial:** Google Gemini para interpretação de mensagens e geração de análises.
+- **Banco de dados:** Supabase para persistência e atualização dos dados.
 
-## 3. Arquitetura de Pastas e Arquivos
+### Fluxo geral
 
-```
-sales-intelligence-ai/
-├── src/
-│   ├── assets/
-│   │   └── logo.png              # Asset gráfico complementar
-│   ├── components/
-│   │   ├── BrandLogo.jsx         # Logo vetorial minimalista SVG oficial
-│   │   ├── CommandPalette.jsx    # Paleta de busca global flutuante (Ctrl+K)
-│   │   ├── Header.jsx            # Barra superior (busca, notificações realtime, perfil)
-│   │   ├── LeadsTable.jsx        # Tabela rica com barra de score e modal de diagnóstico
-│   │   ├── SalesCharts.jsx       # Gráficos de temperatura e segmentos/categorias
-│   │   ├── SettingsModal.jsx     # Modal de governança de alertas e status de conexões
-│   │   ├── Sidebar.jsx           # Navegação principal, logo e status do websocket
-│   │   └── StatCard.jsx          # Cards de KPIs com tipografia tabular e tendências
-│   ├── lib/
-│   │   └── supabase.js           # Inicialização do client Supabase
-│   ├── pages/
-│   │   ├── DashboardPage.jsx     # Visão Geral (Command Center com filtros de tempo e táticos)
-│   │   ├── IntelligencePage.jsx  # Diagnósticos profundos de IA e leitura semântica
-│   │   ├── LeadsPage.jsx         # Gestão completa da base de leads
-│   │   ├── OpportunitiesPage.jsx # Hot Pipeline (leads com alta propensão de conversão)
-│   │   └── PerformancePage.jsx   # Curvas de entrada (últimos 7 dias) e qualificação
-│   ├── App.css                   # Reset complementar
-│   ├── App.jsx                   # Componente raiz, orquestração de estado e realtime
-│   ├── index.css                 # Tokens do design system, glassmorphism e scrollbar
-│   └── main.jsx                  # Ponto de entrada React montado no DOM
-├── .env.example / .env           # Credenciais Supabase
-├── DOCUMENTACAO.md               # Esta documentação
-├── package.json                  # Dependências e scripts npm
-└── vite.config.js                # Configuração do Vite + Tailwind plugin
+```mermaid
+flowchart TD
+    A[Mensagem do lead] --> B[Webhook n8n]
+    B --> C[Google Gemini]
+    C --> D[Classificação e Lead Scoring]
+    D --> E[Supabase]
+    E --> F[Dashboard React]
+
+    B --> G[Insights individuais]
+    G --> E
+
+    H[Agendamento diário] --> I[Workflow 2]
+    I --> J[Consolidação dos dados]
+    J --> K[Análise estratégica com IA]
+    K --> L[Relatório estratégico]
+    L --> E
 ```
 
----
+## 3. Workflows de automação
 
-## 4. Design System & Identidade Visual
+### Workflow 1 — Sales Intelligence
 
-A interface foi projetada sob uma estética **Dark Mode Premium** voltada para produtos B2B analíticos:
+Responsável pelo processamento individual dos leads.
 
-* **Paleta de Cores**:
-  * **Fundo de Tela (Canvas)**: `#080A0F` (Grafite espacial profundo).
-  * **Superfícies & Cards**: `#0E121B` com gradiente sutil até `#0B0E15` e efeito de vidro escuro (`glass-panel`).
-  * **Bordas**: `rgba(255, 255, 255, 0.06)` com iluminação superior de 1px.
-  * **Cor de Destaque (Accent)**: Carmesim sofisticado (`#F43F5E` / Tailwind Rose-500) com brilhos sutis (`glows` de 10% a 20% de opacidade).
-* **Tipografia**:
-  * Família `Inter` com classes `tabular-nums` para todos os valores numéricos e percentuais, eliminando jitter em atualizações.
-* **Componentes de Destaque**:
-  * **BrandLogo**: Ícone geométrico proprietário com arco orbital e vetor ascendente de inteligência.
-  * **Command Palette**: Pesquisa global indexando IDs, categorias, necessidades e termos em tempo real.
-  * **Status Realtime**: Indicador visual pulsante na Sidebar confirmando sincronização com Supabase.
+Etapas:
 
----
+1. Recebimento de uma mensagem por webhook.
+2. Envio do conteúdo para análise pelo Google Gemini.
+3. Identificação da categoria e necessidade do lead.
+4. Definição da prioridade e do lead score.
+5. Classificação da temperatura comercial.
+6. Identificação da necessidade de atendimento humano.
+7. Geração de insights e próximos passos recomendados.
+8. Armazenamento das informações no Supabase.
 
-## 5. Estrutura de Dados (Supabase)
+Principais campos produzidos:
+
+- `categoria`
+- `necessidade`
+- `prioridade`
+- `lead_score`
+- `classificacao_lead`
+- `precisa_de_humano`
+- `proximo_passo`
+
+### Workflow 2 — Análise Estratégica
+
+Responsável pela consolidação dos dados comerciais e geração de relatórios.
+
+O workflow possui execução programada diariamente às 18h.
+
+Etapas:
+
+1. Consulta dos dados comerciais disponíveis.
+2. Consolidação das informações dos leads.
+3. Envio dos dados para análise pela IA.
+4. Identificação de padrões e oportunidades.
+5. Geração de um relatório estratégico.
+6. Armazenamento do relatório no Supabase.
+
+## 4. Tecnologias utilizadas
+
+| Tecnologia | Aplicação |
+|---|---|
+| React | Construção da interface |
+| JavaScript | Lógica da aplicação |
+| Vite | Ambiente de desenvolvimento e build |
+| Tailwind CSS | Estilização |
+| React Router | Navegação entre páginas |
+| Recharts | Visualização de dados |
+| Lucide React | Biblioteca de ícones |
+| n8n | Orquestração dos workflows |
+| Google Gemini | Análise e geração de insights |
+| Supabase | Banco de dados e Realtime |
+| Git e GitHub | Versionamento |
+| Vercel | Hospedagem do frontend |
+
+## 5. Banco de dados
+
+O Supabase é utilizado para persistir as informações processadas pelos workflows.
 
 ### Tabela `leads`
-| Campo | Tipo | Descrição |
-| :--- | :--- | :--- |
-| `id` | `uuid / int` | Identificador único do lead |
-| `categoria` | `text` | Segmento mapeado (*automacao*, *software*, *consultoria*, etc.) |
-| `prioridade` | `text` | Nível de atendimento (*alta*, *media*, *baixa*) |
-| `lead_score` | `numeric` | Pontuação preditiva gerada pela IA (0 a 100) |
-| `classificacao_lead` | `text` | Temperatura comercial (*frio*, *morno*, *quente*, *muito quente*) |
-| `mensagem` | `text` | Transcrição ou mensagem original captada |
-| `necessidade` | `text` | Dor ou demanda principal sintetizada pela IA |
-| `proximo_passo` | `text` | Ação comercial sugerida para o vendedor |
-| `precisa_de_humano` | `boolean` | Flag de intervenção humana obrigatória |
-| `created_at` | `timestamp` | Data e hora de entrada do contato |
+
+Armazena os dados dos leads e suas classificações comerciais.
 
 ### Tabela `insights_leads`
-| Campo | Tipo | Descrição |
-| :--- | :--- | :--- |
-| `id` | `uuid / int` | Identificador único do diagnóstico |
-| `lead_id` | `foreign key` | Associação com a tabela `leads` |
-| `insight` | `text` | Diagnóstico semântico detalhado elaborado pelo Gemini |
-| `oportunidade` | `text` | Oportunidade comercial estratégica mapeada |
-| `acao_recomendada` | `text` | Próximo passo tático recomendado |
-| `created_at` | `timestamp` | Momento da geração do insight |
 
----
+Armazena os diagnósticos, oportunidades e recomendações gerados pela IA para cada lead.
 
-## 6. Módulos e Páginas do Sistema
+### Tabela `relatorios_estrategicos`
 
-### 1. Visão Geral (`DashboardPage.jsx`)
-- **Seletor Temporal Funcional**: Alternância dinâmica entre *Últimos 7 dias*, *Últimos 30 dias*, *Últimos 90 dias* ou *Todo o período*.
-- **Painel de Filtros Táticos**: Filtragem combinada por categoria, apenas leads quentes e leads que necessitam de intervenção humana.
-- **KPIs em Tempo Real**: Total de leads, Score médio ponderado, Leads muito quentes e volume de intervenções humanas.
-- **Grid de Gráficos e Tabela**: Visualização imediata das métricas do período filtrado.
+Armazena os relatórios consolidados produzidos pelo segundo workflow.
 
-### 2. Gestão de Leads (`LeadsPage.jsx`)
-- Listagem completa dos contatos com barras visuais de progresso de score, tags de temperatura com glow e botão de inspeção que abre o modal de diagnóstico preditivo.
+### Atualização em tempo real
 
-### 3. Inteligência Comercial (`IntelligencePage.jsx`)
-- Central cognitiva que expõe a distribuição de demandas, percentuais de intenção e o feed completo de análises táticas do Gemini.
+A aplicação utiliza Supabase Realtime para acompanhar alterações nos dados e atualizar a interface sem depender de recarregamentos manuais.
 
-### 4. Desempenho (`PerformancePage.jsx`)
-- Curva contínua de entrada com gráfico de área nos últimos 7 dias e distribuição por estágios de qualificação (Frio, Morno, Quente e Muito Quente).
+## 6. Interface do sistema
 
-### 5. Oportunidades (`OpportunitiesPage.jsx`)
-- Fila de atendimento prioritário focada exclusivamente em leads com propensão de fechamento imediata (*Quente* e *Muito Quente*), ordenados pelo maior lead score.
+O dashboard foi desenvolvido com uma identidade visual escura, inspirada em ferramentas de monitoramento e análise de dados.
 
----
+O sistema possui cinco áreas principais:
 
-## 7. Como Executar o Projeto
+- **Dashboard:** visão geral dos indicadores comerciais.
+- **Leads:** visualização e acompanhamento dos contatos.
+- **Inteligência:** insights e análises gerados pela IA.
+- **Desempenho:** acompanhamento de métricas comerciais.
+- **Oportunidades:** identificação de leads com maior potencial comercial.
+
+## 7. Configuração local
 
 ### Pré-requisitos
-- Node.js versão 18+ (testado no Node.js v24)
-- Chaves de acesso ao projeto Supabase (`URL` e `Publishable Anon Key`)
 
-### Instalação e Execução
+- Node.js
+- npm
+- Projeto Supabase configurado
+
+### Instalação
+
+Clone o repositório:
+
 ```bash
-# 1. Instalar dependências
+git clone https://github.com/joaopreiss/sales-intelligence-ai.git
+```
+
+Entre na pasta:
+
+```bash
+cd sales-intelligence-ai
+```
+
+Instale as dependências:
+
+```bash
 npm install
+```
 
-# 2. Configurar variáveis de ambiente (.env)
-VITE_SUPABASE_URL=https://seu-projeto.supabase.co
-VITE_SUPABASE_PUBLISHABLE_KEY=sua-chave-publica-aqui
+### Variáveis de ambiente
 
-# 3. Rodar em ambiente de desenvolvimento
+Crie um arquivo `.env` na raiz do projeto:
+
+```env
+VITE_SUPABASE_URL=sua_url_supabase
+VITE_SUPABASE_PUBLISHABLE_KEY=sua_chave_publica
+```
+
+Utilize as credenciais públicas apropriadas do projeto Supabase. Nunca coloque chaves privilegiadas no frontend.
+
+### Executar localmente
+
+```bash
 npm run dev
+```
 
-# 4. Compilar para produção
+### Gerar build de produção
+
+```bash
 npm run build
+```
 
-# 5. Pré-visualizar a build de produção
+### Visualizar a build
+
+```bash
 npm run preview
 ```
 
+## 8. Segurança
+
+O projeto utiliza variáveis de ambiente para configurar a conexão com o Supabase.
+
+As principais medidas adotadas incluem:
+
+- Arquivos `.env` excluídos do versionamento.
+- Utilização de chave pública apropriada no frontend.
+- Row Level Security (RLS) habilitado nas tabelas.
+- Políticas de acesso configuradas no Supabase.
+- Credenciais privilegiadas mantidas fora do frontend.
+
+**Observação:** os dados utilizados na demonstração são fictícios. As políticas de leitura pública são destinadas ao ambiente demonstrativo e devem ser revistas antes de utilizar dados comerciais reais.
+
+## 9. Status do projeto
+
+O projeto possui:
+
+- Dashboard publicado na Vercel.
+- Integração com Supabase.
+- Atualização de dados em tempo real.
+- Workflow de processamento individual de leads.
+- Workflow de análise estratégica programada.
+- Geração e armazenamento de relatórios estratégicos.
+
+A entrada de leads é realizada por webhook. A integração com WhatsApp não faz parte do fluxo operacional atualmente publicado.
+
+## 10. Objetivo do projeto
+
+O Sales Intelligence AI foi desenvolvido como projeto de portfólio para explorar a aplicação prática de inteligência artificial, automação e análise de dados em processos comerciais.
+
+O objetivo é demonstrar como essas tecnologias podem transformar mensagens não estruturadas em informações organizadas, apoiar a qualificação de leads e fornecer informações estratégicas para a tomada de decisões.
+
+---
+
+Desenvolvido como projeto de portfólio com foco em IA aplicada a negócios, automação e inteligência comercial.
